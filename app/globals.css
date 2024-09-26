@@ -12,6 +12,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 body {
@@ -22,6 +23,15 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.twa-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 #__next {

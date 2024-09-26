@@ -155,9 +155,11 @@ export default function BlastWars() {
   }
 
   return (
-    <div className="flex items-center justify-center h-full w-full">
-      <div className="w-full max-w-md">
-        {renderGame()}
+    <div className="twa-container">
+      <div className="flex-grow overflow-auto">
+        <div className="w-full max-w-md mx-auto p-4">
+          {renderGame()}
+        </div>
       </div>
     </div>
   )

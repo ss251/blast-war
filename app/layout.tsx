@@ -17,11 +17,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-black">
-        <main className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen">
           <div className="w-full max-w-md h-full">
             {children}
           </div>
-        </main>
+        </div>
       </body>
     </html>
   )

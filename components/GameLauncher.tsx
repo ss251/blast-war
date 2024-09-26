@@ -8,8 +8,8 @@ interface GameLauncherProps {
 
 export default function GameLauncher({ startGame, gameData }: GameLauncherProps) {
   return (
-    <Card className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white shadow-xl rounded-3xl overflow-hidden border border-purple-500 h-full flex flex-col">
-      <CardContent className="p-6 flex flex-col h-full">
+    <Card className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white shadow-xl rounded-3xl overflow-hidden border border-purple-500 flex flex-col">
+      <CardContent className="p-6 flex flex-col flex-grow">
         <h1 className="text-3xl font-bold mb-6 text-center text-purple-400 shadow-text">Blast Wars</h1>
         <div className="space-y-4 flex-grow flex flex-col justify-center">
           <Button
