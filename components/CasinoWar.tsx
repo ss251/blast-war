@@ -1,19 +1,20 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, Volume2, VolumeX } from 'lucide-react'
+import { ChevronLeft, Volume2, VolumeX, Home } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface CasinoWarCard {
   suit: string
   value: string
+  revealed: boolean
 }
 
 interface CasinoWarProps {
   betAmount: number
   gameData: { balance: number }
   updateBalance: (newBalance: number) => void
-  setGameState: (state: 'won' | 'lost' | 'setup') => void
+  setGameState: (state: 'won' | 'lost' | 'setup' | 'launcher') => void
   soundEnabled: boolean
   setSoundEnabled: (enabled: boolean) => void
 }
@@ -45,7 +46,7 @@ export default function CasinoWar({
   const drawCard = (): CasinoWarCard => {
     const suit = SUITS[Math.floor(Math.random() * SUITS.length)]
     const value = VALUES[Math.floor(Math.random() * VALUES.length)]
-    return { suit, value }
+    return { suit, value, revealed: false }
   }
 
   const compareCards = (card1: CasinoWarCard, card2: CasinoWarCard): number => {
@@ -63,11 +64,13 @@ export default function CasinoWar({
     updateBalance(gameData.balance - betAmount)
     const pCard = drawCard()
     const dCard = drawCard()
-    setPlayerCard(pCard)
-    setDealerCard(dCard)
+    setPlayerCard({ ...pCard, revealed: false })
+    setDealerCard({ ...dCard, revealed: false })
     setMessage("Drawing cards...")
 
     setTimeout(() => {
+      setPlayerCard({ ...pCard, revealed: true })
+      setDealerCard({ ...dCard, revealed: true })
       const result = compareCards(pCard, dCard)
       if (result > 0) {
         updateBalance(gameData.balance + betAmount * 2)
@@ -138,9 +141,15 @@ export default function CasinoWar({
             <span className="sr-only">Back</span>
           </Button>
           <h2 className="text-2xl font-bold text-yellow-400 shadow-text">Casino War</h2>
-          <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500" onClick={() => setSoundEnabled(!soundEnabled)}>
-            {soundEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
-          </Button>
+          <div className="flex">
+            <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500 mr-2" onClick={() => setGameState('launcher')}>
+              <Home className="h-6 w-6" />
+              <span className="sr-only">Home</span>
+            </Button>
+            <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500" onClick={() => setSoundEnabled(!soundEnabled)}>
+              {soundEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
         <div className="flex justify-between mb-4 text-sm">
           <span>Chips: {gameData.balance}</span>
@@ -148,7 +157,7 @@ export default function CasinoWar({
         </div>
         <div className="flex justify-center space-x-4 mb-6">
           <div className="w-24 h-36 bg-white rounded-lg flex items-center justify-center">
-            {playerCard && (
+            {playerCard && playerCard.revealed && (
               <span className={`text-4xl ${playerCard.suit === "♥" || playerCard.suit === "♦" ? "text-red-500" : "text-black"}`}>
                 {playerCard.value}{playerCard.suit}
               </span>
@@ -156,7 +165,7 @@ export default function CasinoWar({
           </div>
           <div className="text-3xl font-bold flex items-center">VS</div>
           <div className="w-24 h-36 bg-white rounded-lg flex items-center justify-center">
-            {dealerCard && (
+            {dealerCard && dealerCard.revealed && (
               <span className={`text-4xl ${dealerCard.suit === "♥" || dealerCard.suit === "♦" ? "text-red-500" : "text-black"}`}>
                 {dealerCard.value}{dealerCard.suit}
               </span>

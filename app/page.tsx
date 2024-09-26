@@ -96,6 +96,7 @@ export default function BlastWars() {
             setBetAmount={setBetAmount}
             gameData={gameData}
             handlePlay={handlePlay}
+            setGameState={setGameState}
           />
         )
       case 'playing':
@@ -158,7 +159,7 @@ export default function BlastWars() {
     <div className="twa-container">
       <div className="flex-grow overflow-auto">
         <div className="w-full max-w-md mx-auto p-4">
-          {renderGame()}
+        {renderGame()}
         </div>
       </div>
     </div>

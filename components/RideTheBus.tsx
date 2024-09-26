@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, Volume2, VolumeX } from 'lucide-react'
+import { ChevronLeft, Volume2, VolumeX, Home } from 'lucide-react'
 
 type Round = 'Red or Black' | 'High or Low' | 'Inside Or Outside' | 'Suit' | 'Number'
 const ROUNDS: Round[] = ['Red or Black', 'High or Low', 'Inside Or Outside', 'Suit', 'Number']
@@ -19,7 +19,7 @@ interface RideTheBusProps {
   betAmount: number
   gameData: { balance: number }
   updateBalance: (newBalance: number) => void
-  setGameState: (state: 'won' | 'lost' | 'setup') => void
+  setGameState: (state: 'won' | 'lost' | 'setup' | 'launcher') => void
   soundEnabled: boolean
   setSoundEnabled: (enabled: boolean) => void
 }
@@ -57,10 +57,6 @@ export default function RideTheBus({
   }
 
   const handleGuess = (guess: string) => {
-    const newCards = [...cards]
-    newCards[currentRound].revealed = true
-    setCards(newCards)
-
     let correct = false
     const card = cards[currentRound]
 
@@ -90,23 +86,25 @@ export default function RideTheBus({
         break
     }
 
+    const newCards = [...cards]
+    newCards[currentRound].revealed = true
+    setCards(newCards)
+
     if (correct) {
       setMultiplier(multiplier * 1.5)
       playSound('correct')
       if (currentRound === 4) {
         const winnings = betAmount * multiplier * 1.5
         updateBalance(gameData.balance + winnings)
-        setGameState('won')
+        setTimeout(() => setGameState('won'), 1000)
       } else {
         setCurrentRound(currentRound + 1)
       }
     } else {
       playSound('wrong')
-      const allRevealed = newCards.map(card => ({ ...card, revealed: true }))
-      setCards(allRevealed)
-      setTimeout(() => {
-        setGameState('lost')
-      }, 1000)
+      newCards.forEach(card => card.revealed = true)
+      setCards(newCards)
+      setTimeout(() => setGameState('lost'), 1000)
     }
   }
 
@@ -126,9 +124,15 @@ export default function RideTheBus({
             <span className="sr-only">Back</span>
           </Button>
           <h2 className="text-2xl font-bold text-yellow-400 shadow-text">Ride The Bus</h2>
-          <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500" onClick={() => setSoundEnabled(!soundEnabled)}>
-            {soundEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
-          </Button>
+          <div className="flex">
+            <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500 mr-2" onClick={() => setGameState('launcher')}>
+              <Home className="h-6 w-6" />
+              <span className="sr-only">Home</span>
+            </Button>
+            <Button variant="ghost" size="icon" className="text-yellow-400 hover:text-yellow-500" onClick={() => setSoundEnabled(!soundEnabled)}>
+              {soundEnabled ? <Volume2 className="h-6 w-6" /> : <VolumeX className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
         <div className="flex justify-between mb-4 text-sm">
           <span>Bet: {betAmount} 🪙</span>

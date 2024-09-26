@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
+import { Home } from 'lucide-react'
 
 interface GameSetupProps {
   currentGame: 'RideTheBus' | 'TileHunter' | 'CasinoWar' | null
@@ -10,6 +11,7 @@ interface GameSetupProps {
   setBetAmount: (amount: number) => void
   gameData: { balance: number }
   handlePlay: () => void
+  setGameState?: (state: 'launcher' | 'setup' | 'playing') => void // Make it optional
 }
 
 const DIFFICULTIES = ['Easy', 'Medium', 'Hard', 'Insane']
@@ -22,14 +24,34 @@ export default function GameSetup({
   setBetAmount,
   gameData,
   handlePlay,
+  setGameState
 }: GameSetupProps) {
+  const handleHomeClick = () => {
+    if (setGameState) {
+      setGameState('launcher')
+    } else {
+      console.warn('setGameState function not provided to GameSetup')
+    }
+  }
+
   return (
-    <Card className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white shadow-xl rounded-3xl overflow-hidden">
+    <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-purple-900 to-indigo-900 text-white shadow-xl rounded-3xl overflow-hidden">
       <CardContent className="p-6">
-        <h2 className="text-3xl font-bold mb-6 text-center text-yellow-400 shadow-text">
-          {currentGame === 'RideTheBus' ? 'Ride The Bus' : 
-           currentGame === 'TileHunter' ? 'Tile Hunter' : 'Casino War'}
-        </h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-bold text-center text-yellow-400 shadow-text">
+            {currentGame === 'RideTheBus' ? 'Ride The Bus' : 
+             currentGame === 'TileHunter' ? 'Tile Hunter' : 'Casino War'}
+          </h2>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-yellow-400 hover:text-yellow-500" 
+            onClick={handleHomeClick}
+          >
+            <Home className="h-6 w-6" />
+            <span className="sr-only">Home</span>
+          </Button>
+        </div>
         <div className="flex justify-between items-center mb-4">
           <span className="text-lg">Bet Amount</span>
           <span className="font-bold text-lg">BALANCE: 🪙 {gameData.balance}</span>
