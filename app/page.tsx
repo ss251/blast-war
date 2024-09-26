@@ -28,8 +28,6 @@ const INITIAL_GAME_DATA: GameData = {
 interface TelegramWebApp {
   ready: () => void;
   expand: () => void;
-  onEvent: (eventType: string, callback: () => void) => void;
-  offEvent: (eventType: string, callback: () => void) => void;
   // Add other methods and properties as needed
 }
 
@@ -49,28 +47,25 @@ export default function BlastWars() {
   const [betAmount, setBetAmount] = useState(250)
   const [gameData, setGameData] = useState<GameData>(INITIAL_GAME_DATA)
   const [soundEnabled, setSoundEnabled] = useState(true)
-  const [tg, setTg] = useState<TelegramWebApp | null>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-      const tgApp = window.Telegram.WebApp
-      setTg(tgApp)
-      tgApp.ready()
-      tgApp.expand()
+    const tg = window.Telegram?.WebApp
+    if (tg) {
+      tg.ready()
+      tg.expand()
 
-      tgApp.onEvent('viewportChanged', handleViewportChange)
-
-      return () => {
-        tgApp.offEvent('viewportChanged', handleViewportChange)
+      // Set the viewport height to match the content
+      const setViewportHeight = () => {
+        const vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
       }
+
+      setViewportHeight()
+      window.addEventListener('resize', setViewportHeight)
+
+      return () => window.removeEventListener('resize', setViewportHeight)
     }
   }, [])
-
-  const handleViewportChange = () => {
-    console.log('Viewport changed', tg)
-    // You can use the `tg` state here if needed
-    // For example: tg?.someMethod()
-  }
 
   const startGame = (game: Game) => {
     setCurrentGame(game)

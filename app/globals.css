@@ -6,6 +6,7 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
+  --vh: 1vh;
 }
 
 body {
@@ -16,6 +17,22 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  min-height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+}
+
+#__next {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add this to ensure your main content takes up the full height */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 @layer utilities {
