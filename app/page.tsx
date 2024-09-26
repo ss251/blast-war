@@ -53,17 +53,6 @@ export default function BlastWars() {
     if (tg) {
       tg.ready()
       tg.expand()
-
-      // Set the viewport height to match the content
-      const setViewportHeight = () => {
-        const vh = window.innerHeight * 0.01
-        document.documentElement.style.setProperty('--vh', `${vh}px`)
-      }
-
-      setViewportHeight()
-      window.addEventListener('resize', setViewportHeight)
-
-      return () => window.removeEventListener('resize', setViewportHeight)
     }
   }, [])
 
@@ -166,8 +155,10 @@ export default function BlastWars() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      {renderGame()}
+    <div className="flex items-center justify-center h-full w-full">
+      <div className="w-full max-w-md">
+        {renderGame()}
+      </div>
     </div>
   )
 }
