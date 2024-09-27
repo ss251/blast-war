@@ -64,16 +64,16 @@ export default function CasinoWar({
     }
 
     updateBalance(gameData.balance - betAmount)
-    const pCard = drawCard()
-    const dCard = drawCard()
-    setPlayerCard({ ...pCard, revealed: false })
-    setDealerCard({ ...dCard, revealed: false })
+    const playerCard = drawCard()
+    const dealerCard = drawCard()
+    setPlayerCard(playerCard)
+    setDealerCard(dealerCard)
+    setPlayerCard(prev => prev ? { ...prev, revealed: true } : null)
+    setDealerCard(prev => prev ? { ...prev, revealed: true } : null)
     setMessage("Drawing cards...")
 
     setTimeout(() => {
-      setPlayerCard({ ...pCard, revealed: true })
-      setDealerCard({ ...dCard, revealed: true })
-      const result = compareCards(pCard, dCard)
+      const result = compareCards(playerCard, dealerCard)
       if (result > 0) {
         updateBalance(gameData.balance + betAmount * 2)
         setMessage("You win!")
@@ -90,38 +90,33 @@ export default function CasinoWar({
   }
 
   const goToWar = () => {
+    setIsWar(true)
     setWarDialogOpen(false)
-    if (gameData.balance < betAmount) {
-      setMessage("Not enough chips to go to war!")
-      setIsWar(false)
-      return
-    }
-
-    updateBalance(gameData.balance - betAmount)
-    setMessage("Going to war!")
+    
+    // Draw new cards for war
+    const newPlayerCard = drawCard()
+    const newDealerCard = drawCard()
+    
+    setPlayerCard(newPlayerCard)
+    setDealerCard(newDealerCard)
+    setPlayerCard(prev => prev ? { ...prev, revealed: true } : null)
+    setDealerCard(prev => prev ? { ...prev, revealed: true } : null)
 
     setTimeout(() => {
-      const pCard = drawCard()
-      const dCard = drawCard()
-      setPlayerCard(pCard)
-      setDealerCard(dCard)
-
-      setTimeout(() => {
-        const result = compareCards(pCard, dCard)
-        if (result > 0) {
-          updateBalance(gameData.balance + betAmount * 4)
-          setMessage("You won the war!")
-          playSound('win')
-        } else if (result < 0) {
-          setMessage("You lost the war!")
-          playSound('lose')
-        } else {
-          updateBalance(gameData.balance + betAmount * 3)
-          setMessage("It's another tie! You win 1:1")
-          playSound('win')
-        }
-        setIsWar(false)
-      }, 1000)
+      const result = compareCards(newPlayerCard, newDealerCard)
+      if (result > 0) {
+        updateBalance(gameData.balance + betAmount * 4)
+        setMessage("You won the war!")
+        playSound('win')
+      } else if (result < 0) {
+        setMessage("You lost the war!")
+        playSound('lose')
+      } else {
+        updateBalance(gameData.balance + betAmount * 3)
+        setMessage("It's another tie! You win 1:1")
+        playSound('win')
+      }
+      setIsWar(false)
     }, 1000)
   }
 
@@ -185,19 +180,29 @@ export default function CasinoWar({
         </Button>
       </CardContent>
       <Dialog open={warDialogOpen} onOpenChange={setWarDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>It&apos;s a tie!</DialogTitle>
-            <DialogDescription>
-              Do you want to go to war or surrender?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={surrender}>Surrender</Button>
-            <Button onClick={goToWar}>Go to War</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DialogContent className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white border-2 border-yellow-500">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-yellow-400">It&apos;s a tie!</DialogTitle>
+          <DialogDescription className="text-white text-lg">
+            Do you want to go to war or surrender?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex justify-center space-x-4 mt-4">
+          <Button
+            onClick={surrender}
+            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
+          >
+            Surrender
+          </Button>
+          <Button
+            onClick={goToWar}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
+          >
+            Go to War
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
     </Card>
   )
 }
