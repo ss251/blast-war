@@ -180,29 +180,29 @@ export default function CasinoWar({
         </Button>
       </CardContent>
       <Dialog open={warDialogOpen} onOpenChange={setWarDialogOpen}>
-      <DialogContent className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white border-2 border-yellow-500">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-yellow-400">It&apos;s a tie!</DialogTitle>
-          <DialogDescription className="text-white text-lg">
-            Do you want to go to war or surrender?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex justify-center space-x-4 mt-4">
-          <Button
-            onClick={surrender}
-            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
-          >
-            Surrender
-          </Button>
-          <Button
-            onClick={goToWar}
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
-          >
-            Go to War
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <DialogContent className="bg-gradient-to-b from-purple-900 to-indigo-900 text-white border-2 border-yellow-500">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-yellow-400">It&apos;s a tie!</DialogTitle>
+            <DialogDescription className="text-white text-lg">
+              Do you want to go to war or surrender?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4 mb-1">
+            <Button
+              onClick={surrender}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
+            >
+              Surrender
+            </Button>
+            <Button
+              onClick={goToWar}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 shadow-lg"
+            >
+              Go to War
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }
