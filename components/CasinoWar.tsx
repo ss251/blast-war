@@ -172,7 +172,7 @@ export default function CasinoWar({
         </div>
         <p className="text-center mb-4">{message}</p>
         <Button
-          className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 rounded-full transition-all duration-200 shadow-lg"
+          className="w-full bg-yellow-600 text-white font-bold py-3 rounded-full transition-all duration-200 shadow-lg"
           onClick={playRound}
           disabled={isWar}
         >
