@@ -11,6 +11,7 @@ interface CasinoWarCard {
 }
 
 interface CasinoWarProps {
+  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Insane' | null
   betAmount: number
   gameData: { balance: number }
   updateBalance: (newBalance: number) => void
@@ -23,6 +24,7 @@ const SUITS = ['♠', '♥', '♦', '♣']
 const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
 export default function CasinoWar({
+  difficulty,
   betAmount,
   gameData,
   updateBalance,
@@ -154,6 +156,7 @@ export default function CasinoWar({
         <div className="flex justify-between mb-4 text-sm">
           <span>Chips: {gameData.balance}</span>
           <span className="text-green-400">Bet: {betAmount}</span>
+          <span className="text-yellow-400">Difficulty: {difficulty || 'Not set'}</span>
         </div>
         <div className="flex justify-center space-x-4 mb-6">
           <div className="w-24 h-36 bg-white rounded-lg flex items-center justify-center">

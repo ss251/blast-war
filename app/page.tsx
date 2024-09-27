@@ -128,6 +128,7 @@ export default function BlastWars() {
           case 'CasinoWar':
             return (
               <CasinoWar
+                difficulty={difficulty}
                 betAmount={betAmount}
                 gameData={gameData}
                 updateBalance={updateBalance}
