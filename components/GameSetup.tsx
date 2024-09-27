@@ -75,9 +75,9 @@ export default function GameSetup({
             {DIFFICULTIES.map((diff) => (
               <Button
                 key={diff}
-                variant={difficulty === diff ? "default" : "outline"}
+                variant={difficulty === diff ? "default" : "touch"}
                 onClick={() => setDifficulty(diff as 'Easy' | 'Medium' | 'Hard' | 'Insane')}
-                className={`${difficulty === diff ? 'bg-yellow-500 text-black' : 'bg-transparent border-yellow-500 text-yellow-500'} hover:bg-yellow-600 hover:text-black transition-all duration-200`}
+                className={`${difficulty === diff ? 'bg-yellow-500 text-black' : 'bg-transparent border-yellow-500 text-yellow-500'} transition-all duration-200`}
               >
                 {diff}
               </Button>
