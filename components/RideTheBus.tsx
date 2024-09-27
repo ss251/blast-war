@@ -139,7 +139,10 @@ export default function RideTheBus({
           <span className="text-green-400">Difficulty: {difficulty}</span>
         </div>
         <p className="text-center text-yellow-400 mb-4 text-xl font-bold">MULTIPLIER - {multiplier.toFixed(2)}x</p>
+        <p className="text-center text-sm mb-2">Current bet: {(betAmount * (multiplier - 1)).toFixed(0)} 🪙</p>
+        <p className="text-center text-sm mb-4">Next round bet: {betAmount} 🪙</p>
         <h3 className="text-center mb-4 text-lg font-semibold">{ROUNDS[currentRound]}</h3>
+        
         <div className="flex justify-center mb-6 perspective">
           {cards.map((card, index) => (
             <div key={index} className="card-container">
@@ -199,6 +202,13 @@ export default function RideTheBus({
         >
           {currentRound === 0 ? 'Cashout Unavailable' : `Cashout ${(betAmount * multiplier).toFixed(0)} 🪙`}
         </Button>
+        <div className="mt-4 space-y-1">
+          {ROUNDS.map((round, index) => (
+            <p key={index} className={`text-sm ${index === currentRound ? "text-yellow-400 font-bold" : "text-gray-400"}`}>
+              Round {index + 1} – {round}
+            </p>
+          ))}
+        </div>
       </CardContent>
     </Card>
   )
